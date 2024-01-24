@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - main
+      - aes
     paths:
       - "**/*.go"
       - "go.mod"
@@ -163,6 +164,8 @@ jobs:
           export _NAME=$(jq ".[\"$GOOS-$GOARCH$GOARM$GOMIPS\"].friendlyName" -r < .github/build/friendly-filenames.json)
           echo "GOOS: $GOOS, GOARCH: $GOARCH, GOARM: $GOARM, GOMIPS: $GOMIPS, RELEASE_NAME: $_NAME"
           echo "ASSET_NAME=$_NAME" >> $GITHUB_ENV
+          echo "ENCRYPT_KEY_IV=${{ secrets.ENCRYPT_KEY_IV }}" >> $GITHUB_ENV
+          echo "ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }}" >> $GITHUB_ENV
 
       - name: Set up Go
         uses: actions/setup-go@v5

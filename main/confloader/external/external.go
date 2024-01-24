@@ -4,6 +4,8 @@ package external
 
 import (
 	"bytes"
+	box "github.com/xtls/xray-core"
+	"github.com/xtls/xray-core/constant"
 	"io"
 	"net/http"
 	"net/url"
@@ -28,7 +30,9 @@ func ConfigLoader(arg string) (out io.Reader, err error) {
 	default:
 		data, err = os.ReadFile(arg)
 	}
-
+	if constant.ENCRYPTED_CONFIG {
+		data, err = box.DecryptAES(data)
+	}
 	if err != nil {
 		return
 	}

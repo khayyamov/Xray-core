@@ -17,6 +17,7 @@ import (
 	"github.com/xtls/xray-core/common/cmdarg"
 	clog "github.com/xtls/xray-core/common/log"
 	"github.com/xtls/xray-core/common/platform"
+	"github.com/xtls/xray-core/constant"
 	"github.com/xtls/xray-core/core"
 	"github.com/xtls/xray-core/main/commands/base"
 )
@@ -59,6 +60,7 @@ var (
 	_ = func() bool {
 		cmdRun.Flag.Var(&configFiles, "config", "Config path for Xray.")
 		cmdRun.Flag.Var(&configFiles, "c", "Short alias of -config")
+		cmdRun.Flag.BoolVar(&constant.ENCRYPTED_CONFIG, "e", false, "Read Encrypted config")
 		cmdRun.Flag.StringVar(&configDir, "confdir", "", "A dir with multiple json config")
 
 		return true
