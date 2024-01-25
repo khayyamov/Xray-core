@@ -1,12 +1,7 @@
 name: Build and Release
 
 on:
-  workflow_dispatch:
-  release:
-    types: [published]
   push:
-    paths-ignore:
-      - ".github/workflows/*.yml"
 jobs:
   prepare:
     runs-on: ubuntu-latest
