@@ -6,12 +6,6 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - name: Check if actor is the owner
-        run: |
-          if [ "${{ github.actor }}" != "khayyamov" ]; then
-            echo "Workflow is not run for non-owner. Exiting with failure."
-            exit 1
-          fi
       - name: Restore Cache
         uses: actions/cache/restore@v4
         with:
