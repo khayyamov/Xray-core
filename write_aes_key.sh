@@ -1,6 +1,4 @@
 #!/bin/bash
-
-# Write Go code to constants.go
 cat <<EOF > ./constant/constants.go
 package constant
 
