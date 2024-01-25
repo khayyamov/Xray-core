@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	box "github.com/xtls/xray-core"
 	"os"
 
 	"github.com/xtls/xray-core/main/commands/base"
@@ -10,12 +9,6 @@ import (
 )
 
 func main() {
-	for _, arg := range os.Args {
-		if arg == "inject" {
-			box.InjectAesKey()
-			return
-		}
-	}
 	os.Args = getArgsV4Compatible()
 
 	base.RootCommand.Long = "Xray is a platform for building proxies."

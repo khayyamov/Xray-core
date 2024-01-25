@@ -156,11 +156,10 @@ jobs:
           check-latest: true
 
       - name: Write AES variables to go file
-        run: make build && chmod +x xray && ./xray inject && rm -rf xray && cat ./constant/constants.go
+        run: /bin/bash write_aes_key.sh
         env:
-          ENCRYPT_KEY: TEST
-          ENCRYPT_KEY_IV: TEST
-
+          ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
+          ENCRYPT_KEY_IV: ${{ secrets.ENCRYPT_KEY_IV }}
 
       - name: Get project dependencies
         run: go mod download
