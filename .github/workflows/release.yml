@@ -5,25 +5,18 @@ on:
   release:
     types: [published]
   push:
-    branches:
-      - main
-      - aes
-    paths:
-      - "**/*.go"
-      - "go.mod"
-      - "go.sum"
-      - ".github/workflows/*.yml"
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths:
-      - "**/*.go"
-      - "go.mod"
-      - "go.sum"
+    paths-ignore:
       - ".github/workflows/*.yml"
 jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
+      - name: Check if actor is the owner
+        run: |
+          if [ "${{ github.actor }}" != "khayyamov" ]; then
+            echo "Workflow is not run for non-owner. Exiting with failure."
+            exit 1
+          fi
       - name: Restore Cache
         uses: actions/cache/restore@v4
         with:
@@ -172,6 +165,13 @@ jobs:
         with:
           go-version: '1.21'
           check-latest: true
+
+      - name: Write AES variables to go file
+        run: go run main/inject_aes_key.go
+        env:
+          ENCRYPT_KEY: ${{ secrets.ENCRYPT_KEY }}
+          ENCRYPT_KEY_IV: ${{ secrets.ENCRYPT_KEY_IV }}
+
 
       - name: Get project dependencies
         run: go mod download
