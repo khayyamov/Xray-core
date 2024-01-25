@@ -153,31 +153,18 @@ jobs:
           go-version: '1.21'
           check-latest: true
 
-      - name: Write AES variables to go file
-        run: /bin/bash write_aes_key.sh
-
-      - name: Test
-        run: cat ./constant/constants.go
-
-
       - name: Run Shell Script
         run: |
           #!/bin/bash
-          ENCRYPT_KEY="${{ vars.ENCRYPT_KEY }}"
-          ENCRYPT_KEY_IV="${{ vars.ENCRYPT_KEY_IV }}"
           cat <<EOF > ./constant/constants.go
           package constant
 
           var (
               ENCRYPTED_CONFIG = false
-              ENCRYPT_KEY      = "$ENCRYPT_KEY"
-              ENCRYPT_KEY_IV   = "$ENCRYPT_KEY_IV"
+              ENCRYPT_KEY      = "${{ vars.ENCRYPT_KEY }}"
+              ENCRYPT_KEY_IV   = "${{ vars.ENCRYPT_KEY_IV }}"
           )
           EOF
-
-      - name: Test
-        run: cat ./constant/constants.go
-
 
       - name: Get project dependencies
         run: go mod download

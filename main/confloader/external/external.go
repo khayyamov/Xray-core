@@ -33,10 +33,6 @@ func ConfigLoader(arg string) (out io.Reader, err error) {
 	if constant.ENCRYPTED_CONFIG {
 		print()
 		data, err = box.DecryptAES(data)
-		if err != nil {
-			print(constant.ENCRYPT_KEY)
-			print(constant.ENCRYPT_KEY_IV)
-		}
 	}
 	if err != nil {
 		return

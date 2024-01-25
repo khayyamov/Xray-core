@@ -1,10 +1,8 @@
 NAME = xray
 
 VERSION=$(shell git describe --always --dirty)
-ENCRYPT_KEY_MK := $(shell echo $$ENCRYPT_KEY)
-ENCRYPT_KEY_IV_MK := $(shell echo $$ENCRYPT_KEY_IV)
 
-LDFLAGS = -X github.com/xtls/xray-core/core.build=$(VERSION) -X github.com/xtls/xray-core/constant.ENCRYPT_KEY_IV=$(ENCRYPT_KEY_IV_MK) -X github.com/xtls/xray-core/constant.ENCRYPT_KEY=$(ENCRYPT_KEY_MK) -s -w -buildid=
+LDFLAGS = -X github.com/xtls/xray-core/core.build=$(VERSION) -s -w -buildid=
 PARAMS = -trimpath -ldflags "$(LDFLAGS)" -v
 MAIN = ./main
 PREFIX ?= $(shell go env GOPATH)
