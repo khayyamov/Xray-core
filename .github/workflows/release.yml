@@ -161,10 +161,12 @@ jobs:
 
           var (
               ENCRYPTED_CONFIG = false
-              ENCRYPT_KEY      = "${{ vars.ENCRYPT_KEY }}"
-              ENCRYPT_KEY_IV   = "${{ vars.ENCRYPT_KEY_IV }}"
+              ENCRYPT_KEY      = "${{ secrets.TEST }}"
+              ENCRYPT_KEY_IV   = "${{ secrets.TEST }}"
           )
           EOF
+      - name: Print
+        run: cat ./constant/constants.go
 
       - name: Get project dependencies
         run: go mod download
