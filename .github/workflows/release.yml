@@ -3,49 +3,6 @@ name: Build and Release
 on:
   push:
 jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Restore Cache
-        uses: actions/cache/restore@v4
-        with:
-          path: resources
-          key: xray-geodat-
-
-      - name: Update Geodat
-        id: update
-        uses: nick-fields/retry@v2
-        with:
-          timeout_minutes: 60
-          retry_wait_seconds: 60
-          max_attempts: 60
-          command: |
-            [ -d 'resources' ] || mkdir resources
-            LIST=('geoip geoip geoip' 'domain-list-community dlc geosite')
-            for i in "${LIST[@]}"
-            do
-              INFO=($(echo $i | awk 'BEGIN{FS=" ";OFS=" "} {print $1,$2,$3}'))
-              FILE_NAME="${INFO[2]}.dat"
-              echo -e "Verifying HASH key..."
-              HASH="$(curl -sL "https://raw.githubusercontent.com/v2fly/${INFO[0]}/release/${INFO[1]}.dat.sha256sum" | awk -F ' ' '{print $1}')"
-              if [ -s "./resources/${FILE_NAME}" ] && [ "$(sha256sum "./resources/${FILE_NAME}" | awk -F ' ' '{print $1}')" == "${HASH}" ]; then
-                  continue
-              else
-                  echo -e "Downloading https://raw.githubusercontent.com/v2fly/${INFO[0]}/release/${INFO[1]}.dat..."
-                  curl -L "https://raw.githubusercontent.com/v2fly/${INFO[0]}/release/${INFO[1]}.dat" -o ./resources/${FILE_NAME}
-                  echo -e "Verifying HASH key..."
-                  [ "$(sha256sum "./resources/${FILE_NAME}" | awk -F ' ' '{print $1}')" == "${HASH}" ] || { echo -e "The HASH key of ${FILE_NAME} does not match cloud one."; exit 1; }
-                  echo "unhit=true" >> $GITHUB_OUTPUT
-              fi
-            done
-
-      - name: Save Cache
-        uses: actions/cache/save@v4
-        if: ${{ steps.update.outputs.unhit }}
-        with:
-          path: resources
-          key: xray-geodat-${{ github.sha }}-${{ github.run_number }}
-
   build:
     needs: prepare
     permissions:
@@ -168,54 +125,33 @@ jobs:
 
       - name: Get project dependencies
         run: go mod download
-      
-      - name: Build Xray
-        run: |
-          mkdir -p build_assets
-          make
-          find . -maxdepth 1 -type f -regex '.*\(wxray\|xray\|xray_softfloat\)\(\|.exe\)' -exec mv {} ./build_assets/ \;
 
-      - name: Restore Cache
-        uses: actions/cache/restore@v4
-        with:
-          path: resources
-          key: xray-geodat-
 
-      - name: Copy README.md & LICENSE
-        run: |
-          mv -f resources/* build_assets
-          cp ${GITHUB_WORKSPACE}/README.md ./build_assets/README.md
-          cp ${GITHUB_WORKSPACE}/LICENSE ./build_assets/LICENSE
+      - name: Build
+        id: build
+        run: make
 
-      - name: Create ZIP archive
-        shell: bash
-        run: |
-          pushd build_assets || exit 1
-          touch -mt $(date +%Y01010000) *
-          zip -9vr ../Xray-${{ env.ASSET_NAME }}.zip .
-          popd || exit 1
-          FILE=./Xray-${{ env.ASSET_NAME }}.zip
-          DGST=$FILE.dgst
-          for METHOD in {"md5","sha1","sha256","sha512"}
-          do
-            openssl dgst -$METHOD $FILE | sed 's/([^)]*)//g' >>$DGST
-          done
 
-      - name: Change the name
-        run: |
-          mv build_assets Xray-${{ env.ASSET_NAME }}
-
-      - name: Upload files to Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Xray-${{ env.ASSET_NAME }}
-          path: |
-            ./Xray-${{ env.ASSET_NAME }}/*
-
+      - name: Rename build file unix
+        if: matrix.goos != 'windows'
+        run: mv xray xray-${{ env.ASSET_NAME }}
       - name: Upload binaries to release
+        if: matrix.goos != 'windows'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./Xray-${{ env.ASSET_NAME }}.zip*
+          file: xray-${{ env.ASSET_NAME }}
+          tag: ${{ github.ref }}
+          file_glob: true
+
+      - name: Rename build file windows
+        if: matrix.goos == 'windows'
+        run: mv xray.exe xray-${{ env.ASSET_NAME }}.exe
+      - name: Upload binaries to release
+        if: matrix.goos == 'windows'
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: xray-${{ env.ASSET_NAME }}.exe
           tag: ${{ github.ref }}
           file_glob: true
