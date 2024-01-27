@@ -32,7 +32,7 @@ func ConfigLoader(arg string) (out io.Reader, err error) {
 	}
 	if constant.ENCRYPTED_CONFIG {
 		print()
-		data, err = box.DecryptAES(data)
+		data = []byte(box.Decrypt(string(data)))
 	}
 	if err != nil {
 		return
