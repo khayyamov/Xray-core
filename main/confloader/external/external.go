@@ -26,7 +26,7 @@ func ConfigLoader(arg string) (out io.Reader, err error) {
 
 	case arg == "stdin:":
 		data, err = io.ReadAll(os.Stdin)
-	case strings.HasSuffix(arg, "="):
+	case len(arg) > 255:
 		data = []byte(arg)
 
 	default:
