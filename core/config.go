@@ -115,10 +115,6 @@ func LoadConfig(formatName string, input interface{}) (*Config, error) {
 				f = formatName
 			}
 
-			if f == "" {
-				return nil, newError("Failed to get format of ", file).AtWarning()
-			}
-
 			if f == "protobuf" {
 				hasProtobuf = true
 			}

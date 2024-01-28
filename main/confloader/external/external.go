@@ -26,12 +26,13 @@ func ConfigLoader(arg string) (out io.Reader, err error) {
 
 	case arg == "stdin:":
 		data, err = io.ReadAll(os.Stdin)
+	case strings.HasSuffix(arg, "="):
+		data = []byte(arg)
 
 	default:
 		data, err = os.ReadFile(arg)
 	}
 	if constant.ENCRYPTED_CONFIG {
-		print()
 		data = []byte(box.Decrypt(string(data)))
 	}
 	if err != nil {
