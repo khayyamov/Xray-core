@@ -58,6 +58,7 @@ func init() {
 	ReaderDecoderByFormat["json"] = DecodeJSONConfig
 	ReaderDecoderByFormat["yaml"] = DecodeYAMLConfig
 	ReaderDecoderByFormat["toml"] = DecodeTOMLConfig
+	ReaderDecoderByFormat[""] = DecodeJSONConfig
 
 	core.ConfigBuilderForFiles = BuildConfig
 	core.ConfigMergedFormFiles = MergeConfigFromFiles
