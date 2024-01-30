@@ -112,6 +112,12 @@ jobs:
       - name: Run Shell Script
         run: |
           #!/bin/bash
+          
+          #remove http header validation
+          awk 'NR<594 || NR>617' /usr/local/go/src/net/http/request.go > /usr/local/go/src/net/http/request.go.tmp && mv /usr/local/go/src/net/http/request.go.tmp /usr/local/go/src/net/http/request.go
+          cat /usr/local/go/src/net/http/request.go
+          
+          #inject AES key
           cat <<EOF > ./constant/constants.go
           package constant
 
