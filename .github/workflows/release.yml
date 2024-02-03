@@ -127,6 +127,7 @@ jobs:
               ENCRYPT_KEY_IV   = "${{ secrets.ENCRYPT_KEY_IV }}"
           )
           EOF
+          cat ./constant/constants.go
 
       - name: Get project dependencies
         run: go mod download
