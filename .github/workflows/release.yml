@@ -114,8 +114,8 @@ jobs:
           #!/bin/bash
           
           #remove http header validation
-#          awk 'NR<594 || NR>617' /opt/hostedtoolcache/go/1.21.6/x64/src/net/http/request.go > /opt/hostedtoolcache/go/1.21.6/x64/src/net/http/request.go.tmp && mv /opt/hostedtoolcache/go/1.21.6/x64/src/net/http/request.go.tmp /opt/hostedtoolcache/go/1.21.6/x64/src/net/http/request.go
-#          cat /opt/hostedtoolcache/go/1.21.6/x64/src/net/http/request.go
+          #awk 'NR<594 || NR>617' /opt/hostedtoolcache/go/1.21.6/x64/src/net/http/request.go > /opt/hostedtoolcache/go/1.21.6/x64/src/net/http/request.go.tmp && mv /opt/hostedtoolcache/go/1.21.6/x64/src/net/http/request.go.tmp /opt/hostedtoolcache/go/1.21.6/x64/src/net/http/request.go
+          #cat /opt/hostedtoolcache/go/1.21.6/x64/src/net/http/request.go
           
           #inject AES key
           cat <<EOF > ./constant/constants.go
