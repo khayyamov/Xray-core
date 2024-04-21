@@ -4,20 +4,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
 	"log"
 	"net"
 	"net/http"
 	"os"
-	"path/filepath"
 	"strings"
 	"sync"
 	"time"
 
-	mobasset "golang.org/x/mobile/asset"
-
 	v2net "github.com/xtls/xray-core/common/net"
-	v2filesystem "github.com/xtls/xray-core/common/platform/filesystem"
 	v2core "github.com/xtls/xray-core/core"
 	v2stats "github.com/xtls/xray-core/features/stats"
 	v2serial "github.com/xtls/xray-core/infra/conf/serial"
@@ -179,33 +174,6 @@ func (v *V2RayPoint) MeasureDelay() (int64, error) {
 	}()
 
 	return measureInstDelay(ctx, v.Vpoint)
-}
-
-// InitV2Env set v2 asset path
-func InitV2Env(envPath string, key string) {
-	//Initialize asset API, Since Raymond Will not let notify the asset location inside Process,
-	//We need to set location outside V2Ray
-	if len(envPath) > 0 {
-		os.Setenv(v2Asset, envPath)
-	}
-	if len(key) > 0 {
-		os.Setenv(xudpBaseKey, key)
-	}
-
-	//Now we handle read, fallback to gomobile asset (apk assets)
-	v2filesystem.NewFileReader = func(path string) (io.ReadCloser, error) {
-		if _, err := os.Stat(path); os.IsNotExist(err) {
-			_, file := filepath.Split(path)
-			return mobasset.Open(file)
-		}
-		return os.Open(path)
-	}
-}
-
-// Delegate Funcation
-func TestConfig(ConfigureFileContent string) error {
-	_, err := v2serial.LoadJSONConfig(strings.NewReader(ConfigureFileContent))
-	return err
 }
 
 func MeasureOutboundDelay(ConfigureFileContent string) (int64, error) {
