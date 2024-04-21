@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/xtls/xray-core/features/libv2ray"
 	"log"
 	"os"
 	"os/signal"
@@ -48,6 +49,7 @@ func init() {
 }
 
 var (
+	GetRealPing bool
 	configFiles cmdarg.Arg // "Config file for Xray.", the option is customed type, parse in main
 	configDir   string
 	dump        = cmdRun.Flag.Bool("dump", false, "Dump merged config only, without launching Xray server.")
@@ -61,6 +63,7 @@ var (
 		cmdRun.Flag.Var(&configFiles, "config", "Config path for Xray.")
 		cmdRun.Flag.Var(&configFiles, "c", "Short alias of -config")
 		cmdRun.Flag.BoolVar(&constant.ENCRYPTED_CONFIG, "e", false, "Read Encrypted config")
+		cmdRun.Flag.BoolVar(&GetRealPing, "p", false, "Get real ping of config")
 		cmdRun.Flag.StringVar(&configDir, "confdir", "", "A dir with multiple json config")
 
 		return true
@@ -68,6 +71,18 @@ var (
 )
 
 func executeRun(cmd *base.Command, args []string) {
+
+	if GetRealPing {
+		//xray run -p config
+		delay, err := libv2ray.MeasureOutboundDelay(args[3])
+		if err != nil {
+			fmt.Println("RealDelay:", -1)
+			return
+		}
+		fmt.Println("RealDelay:", delay)
+		return
+	}
+
 	if *dump {
 		clog.ReplaceWithSeverityLogger(clog.Severity_Warning)
 		errCode := dumpConfig()
