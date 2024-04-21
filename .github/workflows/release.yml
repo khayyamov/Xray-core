@@ -144,7 +144,9 @@ jobs:
 
       - name: Rename build file unix
         if: matrix.goos != 'windows'
-        run: mv xray xray-${{ env.ASSET_NAME }}
+        run: |
+          ls
+          mv xray xray-${{ env.ASSET_NAME }}
       - name: Upload binaries to release
         if: matrix.goos != 'windows'
         uses: svenstaro/upload-release-action@v2
