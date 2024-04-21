@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	box "github.com/xtls/xray-core"
 	"github.com/xtls/xray-core/features/libv2ray"
 	"log"
 	"os"
@@ -73,7 +74,11 @@ var (
 func executeRun(cmd *base.Command, args []string) {
 
 	if GetRealPing {
-		//xray run -p config
+		//xray run -e -p config
+		data := args[len(args)-1]
+		if constant.ENCRYPTED_CONFIG {
+			data = box.Decrypt(data)
+		}
 		delay, err := libv2ray.MeasureOutboundDelay(args[3])
 		if err != nil {
 			fmt.Println("RealDelay:", -1)
