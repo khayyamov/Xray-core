@@ -143,23 +143,11 @@ jobs:
           make
           ls
 
-
-      - name: Rename build file linux
-        if: matrix.goos == 'linux'
-        run: |
-          ls
-          mv xray xray-${{ env.ASSET_NAME }}
+      - name: Rename build file unix
+        if: matrix.goos != 'windows'
+        run: mv xray xray-${{ env.ASSET_NAME }}
       - name: Upload binaries to release
-        if: matrix.goos == 'linux'
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: xray-${{ env.ASSET_NAME }}
-          tag: ${{ github.ref }}
-          file_glob: true
-
-      - name: Upload binaries to release
-        if: matrix.goos == 'darwin'
+        if: matrix.goos != 'windows'
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -169,9 +157,7 @@ jobs:
 
       - name: Rename build file windows
         if: matrix.goos == 'windows'
-        run: |
-          ls
-          mv xray.exe xray-${{ env.ASSET_NAME }}.exe
+        run: mv xray.exe xray-${{ env.ASSET_NAME }}.exe
       - name: Upload binaries to release
         if: matrix.goos == 'windows'
         uses: svenstaro/upload-release-action@v2
