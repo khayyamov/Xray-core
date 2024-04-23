@@ -139,7 +139,9 @@ jobs:
 
       - name: Build
         id: build
-        run: make
+        run: |
+          make
+          ls
 
 
       - name: Rename build file linux
