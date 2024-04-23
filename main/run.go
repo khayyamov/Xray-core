@@ -83,8 +83,9 @@ func executeRun(cmd *base.Command, args []string) {
 		if err != nil {
 			fmt.Println("RealDelay:", -1)
 			return
+		} else {
+			fmt.Println("RealDelay:", delay)
 		}
-		fmt.Println("RealDelay:", delay)
 		return
 	}
 
