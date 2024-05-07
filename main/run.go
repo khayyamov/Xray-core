@@ -75,11 +75,11 @@ func executeRun(cmd *base.Command, args []string) {
 
 	if GetRealPing {
 		//xray run -e -p config
-		data := args[len(args)-1]
+		data := args[0]
 		if constant.ENCRYPTED_CONFIG {
 			data = box.Decrypt(data)
 		}
-		delay, err := libv2ray.MeasureOutboundDelay(args[3])
+		delay, err := libv2ray.MeasureOutboundDelay(data)
 		if err != nil {
 			fmt.Println("RealDelay:", -1)
 			return
