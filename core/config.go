@@ -82,6 +82,9 @@ func GetFormatByExtension(ext string) string {
 	case "json", "jsonc":
 		return "json"
 	default:
+		if strings.HasSuffix(ext, "}") {
+			return "json"
+		}
 		return ""
 	}
 }
