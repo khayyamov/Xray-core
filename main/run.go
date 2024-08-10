@@ -64,7 +64,7 @@ var (
 	_ = func() bool {
 		cmdRun.Flag.Var(&configFiles, "config", "Config path for Xray.")
 		cmdRun.Flag.Var(&configFiles, "c", "Short alias of -config")
-		cmdRun.Flag.BoolVar(&constant.ENCRYPTED_CONFIG, "e", false, "Read Encrypted config")
+		cmdRun.Flag.BoolVar(&constant.ENCRYPTED_CONFIG, "e", false, "Read encrypted config")
 		cmdRun.Flag.BoolVar(&GetRealPing, "p", false, "Get real ping of config")
 		cmdRun.Flag.StringVar(&configDir, "confdir", "", "A dir with multiple json config")
 
