@@ -27,10 +27,10 @@ Example:
 
 	{{.Exec}} {{.LongName}} --server=127.0.0.1:8080 -tag="tag name"
 `,
-	Run: executeInboundUserCount,
+	Run: ExecuteInboundUserCount,
 }
 
-func executeInboundUserCount(cmd *base.Command, args []string) {
+func ExecuteInboundUserCount(cmd *base.Command, args []string) {
 	setSharedFlags(cmd)
 	var tag string
 	cmd.Flag.StringVar(&tag, "tag", "", "")

@@ -30,10 +30,10 @@ Example:
 
 	{{.Exec}} {{.LongName}} --server=127.0.0.1:8080 -name "inbound>>>statin>>>traffic>>>downlink"
 `,
-	Run: executeGetStats,
+	Run: ExecuteGetStats,
 }
 
-func executeGetStats(cmd *base.Command, args []string) {
+func ExecuteGetStats(cmd *base.Command, args []string) {
 	setSharedFlags(cmd)
 	statName := cmd.Flag.String("name", "", "")
 	reset := cmd.Flag.Bool("reset", false, "")

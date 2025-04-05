@@ -28,10 +28,10 @@ Example:
 
 	{{.Exec}} {{.LongName}} --server=127.0.0.1:8080 c1.json c2.json
 `,
-	Run: executeAddOutbounds,
+	Run: ExecuteAddOutbounds,
 }
 
-func executeAddOutbounds(cmd *base.Command, args []string) {
+func ExecuteAddOutbounds(cmd *base.Command, args []string) {
 	setSharedFlags(cmd)
 	cmd.Flag.Parse(args)
 	unnamedArgs := cmd.Flag.Args()

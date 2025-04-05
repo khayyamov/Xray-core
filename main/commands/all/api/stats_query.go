@@ -30,10 +30,10 @@ Example:
 
 	{{.Exec}} {{.LongName}} --server=127.0.0.1:8080 -pattern "counter_"
 `,
-	Run: executeQueryStats,
+	Run: ExecuteQueryStats,
 }
 
-func executeQueryStats(cmd *base.Command, args []string) {
+func ExecuteQueryStats(cmd *base.Command, args []string) {
 	setSharedFlags(cmd)
 	pattern := cmd.Flag.String("pattern", "", "")
 	reset := cmd.Flag.Bool("reset", false, "")

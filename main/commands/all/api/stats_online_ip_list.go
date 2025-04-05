@@ -27,10 +27,10 @@ Example:
 
 	{{.Exec}} {{.LongName}} --server=127.0.0.1:8080 -email "xray@love.com"
 `,
-	Run: executeOnlineStatsIpList,
+	Run: ExecuteOnlineStatsIpList,
 }
 
-func executeOnlineStatsIpList(cmd *base.Command, args []string) {
+func ExecuteOnlineStatsIpList(cmd *base.Command, args []string) {
 	setSharedFlags(cmd)
 	email := cmd.Flag.String("email", "", "")
 	cmd.Flag.Parse(args)

@@ -24,10 +24,10 @@ Example:
 
 	{{.Exec}} {{.LongName}} --server=127.0.0.1:8080
 `,
-	Run: executeSysStats,
+	Run: ExecuteSysStats,
 }
 
-func executeSysStats(cmd *base.Command, args []string) {
+func ExecuteSysStats(cmd *base.Command, args []string) {
 	setSharedFlags(cmd)
 	cmd.Flag.Parse(args)
 

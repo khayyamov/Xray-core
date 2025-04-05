@@ -43,10 +43,10 @@ Example:
 	{{.Exec}} {{.LongName}} --server=127.0.0.1:8080 -outbound=blocked -inbound=socks 1.2.3.4
 	{{.Exec}} {{.LongName}} --server=127.0.0.1:8080 -outbound=blocked -inbound=socks 1.2.3.4 -reset
 `,
-	Run: executeSourceIpBlock,
+	Run: ExecuteSourceIpBlock,
 }
 
-func executeSourceIpBlock(cmd *base.Command, args []string) {
+func ExecuteSourceIpBlock(cmd *base.Command, args []string) {
 	var (
 		inbound  string
 		outbound string

@@ -27,10 +27,10 @@ Example:
 
 	{{.Exec}} {{.LongName}} --server=127.0.0.1:8080 c1.json "tag name"
 `,
-	Run: executeRemoveInbounds,
+	Run: ExecuteRemoveInbounds,
 }
 
-func executeRemoveInbounds(cmd *base.Command, args []string) {
+func ExecuteRemoveInbounds(cmd *base.Command, args []string) {
 	setSharedFlags(cmd)
 	cmd.Flag.Parse(args)
 	unnamedArgs := cmd.Flag.Args()

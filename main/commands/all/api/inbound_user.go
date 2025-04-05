@@ -31,10 +31,10 @@ Example:
 	{{.Exec}} {{.LongName}} --server=127.0.0.1:8080 -tag="tag name"
 	{{.Exec}} {{.LongName}} --server=127.0.0.1:8080 -tag="tag name" -email="xray@love.com"
 `,
-	Run: executeInboundUser,
+	Run: ExecuteInboundUser,
 }
 
-func executeInboundUser(cmd *base.Command, args []string) {
+func ExecuteInboundUser(cmd *base.Command, args []string) {
 	setSharedFlags(cmd)
 	var tag string
 	var email string

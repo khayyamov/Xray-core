@@ -34,10 +34,10 @@ Example:
     {{.Exec}} {{.LongName}} --server=127.0.0.1:8080 -b balancer tag
     {{.Exec}} {{.LongName}} --server=127.0.0.1:8080 -b balancer -r
 `,
-	Run: executeBalancerOverride,
+	Run: ExecuteBalancerOverride,
 }
 
-func executeBalancerOverride(cmd *base.Command, args []string) {
+func ExecuteBalancerOverride(cmd *base.Command, args []string) {
 	var (
 		balancer string
 		remove   bool

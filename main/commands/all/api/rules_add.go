@@ -32,10 +32,10 @@ Example:
 
 	{{.Exec}} {{.LongName}} --server=127.0.0.1:8080 c1.json c2.json
 `,
-	Run: executeAddRules,
+	Run: ExecuteAddRules,
 }
 
-func executeAddRules(cmd *base.Command, args []string) {
+func ExecuteAddRules(cmd *base.Command, args []string) {
 	var (
 		shouldAppend bool
 	)

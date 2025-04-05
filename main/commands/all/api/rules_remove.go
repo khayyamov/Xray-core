@@ -26,10 +26,10 @@ Example:
 
 	{{.Exec}} {{.LongName}} --server=127.0.0.1:8080 ruleTag1 ruleTag2
 `,
-	Run: executeRemoveRules,
+	Run: ExecuteRemoveRules,
 }
 
-func executeRemoveRules(cmd *base.Command, args []string) {
+func ExecuteRemoveRules(cmd *base.Command, args []string) {
 	setSharedFlags(cmd)
 	cmd.Flag.Parse(args)
 	ruleTags := cmd.Flag.Args()
