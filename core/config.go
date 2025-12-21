@@ -86,7 +86,7 @@ func GetFormatByExtension(ext string) string {
 	case "json", "jsonc":
 		return "json"
 	default:
-		return ""
+		return "json"
 	}
 }
 
