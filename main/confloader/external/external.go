@@ -3,8 +3,10 @@ package external
 import (
 	"bytes"
 	"context"
-	"net"
+	box "github.com/xtls/xray-core"
+	"github.com/xtls/xray-core/constant"
 	"io"
+	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -32,7 +34,9 @@ func ConfigLoader(arg string) (out io.Reader, err error) {
 	default:
 		data, err = os.ReadFile(arg)
 	}
-
+	if constant.ENCRYPTED_CONFIG {
+		data, err = box.DecryptAES(data)
+	}
 	if err != nil {
 		return
 	}
@@ -78,13 +82,13 @@ func FetchHTTPContent(target string) ([]byte, error) {
 // Format: http+unix:///path/to/socket.sock/api/endpoint
 func FetchUnixSocketHTTPContent(target string) ([]byte, error) {
 	path := strings.TrimPrefix(target, "http+unix://")
-	
+
 	if !strings.HasPrefix(path, "/") {
 		return nil, errors.New("unix socket path must be absolute")
 	}
-	
+
 	var socketPath, httpPath string
-	
+
 	sockIdx := strings.Index(path, ".sock")
 	if sockIdx != -1 {
 		socketPath = path[:sockIdx+5]
@@ -95,11 +99,11 @@ func FetchUnixSocketHTTPContent(target string) ([]byte, error) {
 	} else {
 		return nil, errors.New("cannot determine socket path, socket file should have .sock extension")
 	}
-	
+
 	if _, err := os.Stat(socketPath); err != nil {
 		return nil, errors.New("socket file not found: ", socketPath).Base(err)
 	}
-	
+
 	client := &http.Client{
 		Timeout: 30 * time.Second,
 		Transport: &http.Transport{
@@ -110,22 +114,22 @@ func FetchUnixSocketHTTPContent(target string) ([]byte, error) {
 		},
 	}
 	defer client.CloseIdleConnections()
-	
+
 	resp, err := client.Get("http://localhost" + httpPath)
 	if err != nil {
 		return nil, errors.New("failed to fetch from unix socket: ", socketPath).Base(err)
 	}
 	defer resp.Body.Close()
-	
+
 	if resp.StatusCode != 200 {
 		return nil, errors.New("unexpected HTTP status code: ", resp.StatusCode)
 	}
-	
+
 	content, err := buf.ReadAllToBytes(resp.Body)
 	if err != nil {
 		return nil, errors.New("failed to read response").Base(err)
 	}
-	
+
 	return content, nil
 }
 
