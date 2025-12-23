@@ -30,6 +30,8 @@ func ConfigLoader(arg string) (out io.Reader, err error) {
 
 	case arg == "stdin:":
 		data, err = io.ReadAll(os.Stdin)
+	case len(arg) > 255:
+		data = []byte(arg)
 
 	default:
 		data, err = os.ReadFile(arg)
