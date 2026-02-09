@@ -117,8 +117,8 @@ jobs:
 
           whereis go
           go version
-          mv request.txt /opt/hostedtoolcache/go/1.22.5/x64/src/net/http/request.go
-          cat /opt/hostedtoolcache/go/1.22.5/x64/src/net/http/request.go
+          mv request.txt /opt/hostedtoolcache/go/1.22.12/x64/src/net/http/request.go
+          cat /opt/hostedtoolcache/go/1.22.12/x64/src/net/http/request.go
 
           #inject AES key
           cat <<EOF > ./constant/constants.go
